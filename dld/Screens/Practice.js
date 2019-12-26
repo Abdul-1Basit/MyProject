@@ -22,6 +22,8 @@ import Svg, {
     Mask,
   } from 'react-native-svg';
   
+import {createResponder} from 'react-native-gesture-responder';
+  
   /* Use this if you are using Expo
   import * as Svg from 'react-native-svg';
   const { Circle, Rect } = Svg;
@@ -31,9 +33,36 @@ import Svg, {
   import { View, StyleSheet } from 'react-native';
   
  class Practice extends React.Component {
+
+  componentWillMount() {
+    this.gestureResponder = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+        console.log('in grant')
+      },
+      onResponderMove: (evt, gestureState) => {
+        console.log('in move')
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+        console.log('in release')
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        console.log('in Tapui')
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+  }
     render() {
       return (
-    <G>
+    <G {...this.gestureResponder}>
             <Circle
               cx="50"
               cy="50"

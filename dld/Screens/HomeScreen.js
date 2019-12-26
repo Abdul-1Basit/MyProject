@@ -66,9 +66,8 @@ class HomeScreen extends Component {
   export default HomeScreen;
   const styles = StyleSheet.create({
     cls:{
-        height:'100%',
-        width:'100%'
-    },
+        width:'100%',
+        height:'100%',   },
     Header:{
       flex:1,
       flexDirection:'column',
