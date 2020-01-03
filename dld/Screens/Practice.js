@@ -62,24 +62,17 @@ import {createResponder} from 'react-native-gesture-responder';
   }
     render() {
       return (
-    <G {...this.gestureResponder}>
+    <G >
             <Circle
-              cx="50"
-              cy="50"
-              r="45"
+              cx="69"
+              cy="69"
+              r="4"
               stroke="blue"
-              strokeWidth="2.5"
+              strokeWidth="2"
               fill="green"
             />
-            <Rect
-              x="15"
-              y="15"
-              width="70"
-              height="70"
-              stroke="red"
-              strokeWidth="2"
-              fill="yellow"
-            />
+                  <Line  x1={72.5} y1={72.5} x2={250} y2={250} stroke="black" strokeWidth="2"/>
+          
         </G>
       );
     }

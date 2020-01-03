@@ -39,7 +39,7 @@ class HomeScreen extends Component {
          </View>
          
          <View style={{flex:2,flexDirection:'row',paddingTop:60,paddingRight:15,paddingBottom:0}}>
-            <TouchableOpacity style={styles.buttons}>
+            <TouchableOpacity style={styles.buttons} onPress={()=>this.props.navigation.navigate('About')}>
               <View>
                 <Image source={require('../assets/images/info.png')} style={{width:120,height:120}}/>
                 <View style={styles.buttonText}>
@@ -66,8 +66,10 @@ class HomeScreen extends Component {
   export default HomeScreen;
   const styles = StyleSheet.create({
     cls:{
+      flex:1,
         width:'100%',
-        height:'100%',   },
+        height:'100%', 
+          },
     Header:{
       flex:1,
       flexDirection:'column',

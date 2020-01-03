@@ -6,11 +6,13 @@ import NewCircuit from './Screens/NewCircuit'
 import HomeScreen from './Screens/HomeScreen'
 import Tutorials from './Screens/Tutorials'
 import Practice from './Screens/Practice'
+import About from './Screens/About'
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
   NewCircuit: {screen: NewCircuit},
   Tutorials:{screen: Tutorials},
-  Practice:{screen:Practice}
+  Practice:{screen:Practice},
+  About:{screen:About}
 });
 
 const App = createAppContainer(MainNavigator);

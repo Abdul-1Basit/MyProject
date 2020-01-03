@@ -7,43 +7,18 @@ class NandGate extends Component {
     super(props);
     this.state={
             StartX:50,
-            StartY:250
-    }
-    this.startx=50;
-    this.starty=50;
-    this.pathData=["M",this.state.StartX,this.state.StartY,
-    "L",this.state.StartX,this.state.StartY+60,
-    "M",this.state.StartX,this.state.StartY+60,
-    "L",this.state.StartX+30,this.state.StartY+60,
-    "M",this.state.StartX,this.state.StartY,
-    "L",this.state.StartX+30,this.state.StartY,
-    "M",this.state.StartX+30,this.state.StartY, "Q",this.state.StartX+60,this.state.StartY+30,
-this.state.StartX+30,this.state.StartY+60
-    
-    /* "M",this.startx,this.starty+15,
-    "L",this.startx-30,this.starty+15,
-    "M",this.startx,this.starty+45,
-    "L",this.startx-30,this.starty+45,
-   */
- /* 'M',this.state.StartX,this.state.StartY+60,
-   'C',this.state.StartX+5,this.state.StartY+60,
-   this.state.StartX+10,this.state.StartY+60,
-   'M',this.state.StartX+10,this.state.StartY+60,
-   'C',this.state.StartX+10,this.state.StartY+60,
-   this.state.StartX+15,this.state.StartY+50,
-   'M',this.state.StartX+30,this.state.StartY+30,
-   
-   'C',this.state.StartX+30,this.state.StartY+30,
-   this.state.StartX+15,this.state.StartY+10,
-   this.state.StartX+10,this.state.StartY,
-   'M',this.state.StartX+5,this.state.StartY,
-   'C',this.state.StartX+5,this.state.StartY,
-   this.state.StartX,this.state.StartY,
-*/
-
-].join(' ');
-this.pp2=[    "M",this.state.StartX+30,this.state.StartY, "Q",this.state.StartX+60,this.state.StartY+30,
-this.state.StartX+30,this.state.StartY+60].join(' ');
+            StartY:250,
+            pathData:["M",50,250,
+                      "L",50,250+60,
+                      "M",50,250+60,
+                      "L",50+30,250+60,
+                      "M",50,250,
+                      "L",50+30,250,
+                      "M",50+30,250, "Q",50+60,250+30,  
+                      50+30,250+60
+                      ].join(' '),
+               }
+               this.tap=false;
   this.input1={
       color:'black',
       pointX:this.state.StartX,
@@ -67,31 +42,55 @@ componentWillMount() {
       onMoveShouldSetResponder: (evt, gestureState) => true,
       onMoveShouldSetResponderCapture: (evt, gestureState) => true,
       onResponderGrant: (evt, gestureState) => {},
-      onResponderMove: (evt, gestureState) => {},
+      onResponderMove: (evt, gestureState) => {
+        if(this.tap){
+          this.setState({
+            StartX:gestureState.moveX,
+            StartY:gestureState.moveY,
+            pathData:["M",gestureState.moveX,gestureState.moveY,
+                      "L",gestureState.moveX,gestureState.moveY+60,
+                      "M",gestureState.moveX,gestureState.moveY+60,
+                      "L",gestureState.moveX+30,gestureState.moveY+60,
+                      "M",gestureState.moveX,gestureState.moveY,
+                      "L",gestureState.moveX+30,gestureState.moveY,
+                      "M",gestureState.moveX+30,gestureState.moveY, "Q",gestureState.moveX+60,gestureState.moveY+30,  
+                      gestureState.moveX+30,gestureState.moveY+60
+                      ].join(' '),
+  
+          })
+         
+        }
+      },
       onResponderTerminationRequest: (evt, gestureState) => true,
       onResponderRelease: (evt, gestureState) => {},
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
-          console.log('tap')
-          console.log(gestureState.singleTapUp)
-       //   console.log(gestureState.doubleTapUp,"double tap")
+        
+        this.tap=(this.tap)?false:true;
+        console.log('Nand Gate ',this.tap)
+        //   console.log(gestureState.doubleTapUp,"double tap")
       },
       
       moveThreshold: 2,
       debug: false
     });
   }
+  func(){
+
+  }
 
   render() {
     return (
     <G>
+      {this.func()}
         <G {...this.gestureResponder} >
-          <Path d={this.pathData} stroke="black" strokeWidth="2"  fill='none'/>
-         </G>
+          <Path d={this.state.pathData} stroke="black" strokeWidth="2"  fill='none'/>
+        
           <Line x1={this.state.StartX-1} y1={this.state.StartY+15} x2={this.state.StartX-30} y2={this.state.StartY+15} stroke="red" strokeWidth="2" />
           <Line x1={this.state.StartX-1} y1={this.state.StartY+45} x2={this.state.StartX-30} y2={this.state.StartY+45} stroke="red" strokeWidth="2" />
           <Line x1={this.state.StartX+45} y1={this.state.StartY+30} x2={this.state.StartX+80} y2={this.state.StartY+30} stroke="red" strokeWidth="2" />
+          </G>
           <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="10" fill={this.input1.color} />
          
           <Circle cx={this.state.StartX+50} cy={this.state.StartY+30} r="7" fill="black" />
