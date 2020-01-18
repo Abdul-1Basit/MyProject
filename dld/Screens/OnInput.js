@@ -9,14 +9,18 @@ class Input extends Component {
     super(props);
     this.state = {
         startX:69,
-        startY:69,
+        startY:80,
         inputcolor:'red',
         tap:false
     };
     this.temp='red';
     this.tap=false;
+    this.sx=69;
+    this.sy=80;
   }
   componentWillMount() {
+    
+    this.props.setIn(this.state.startX,this.state.startY,this.state.inputcolor)
     this.gestureResponder = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
       onStartShouldSetResponderCapture: (evt, gestureState) => true,
@@ -26,6 +30,7 @@ class Input extends Component {
       onResponderMove: (evt, gestureState) => {
           if(this.state.tap)
           {
+            
               this.setState({
                   startX:gestureState.moveX,
                   startY:gestureState.moveY
@@ -44,6 +49,14 @@ class Input extends Component {
              inputcolor:this.temp
          })
         }*/
+        if(this.state.tap){
+          this.props.del(this.sx,this.sy,this.state.inputcolor,this.state.startX,this.state.startY)
+        }
+       
+        //  this.props.setIn(this.state.startX,this.state.startY,this.state.inputcolor)
+          //console.log('OnInput',this.state.startX,this.state.startY,this.state.inputcolor)
+         
+        
        
 
       },
@@ -55,10 +68,13 @@ class Input extends Component {
           this.setState({
               tap:(this.tap)?false:true,  
           })
-          if(!this.state.tap){
-              this.props.valueSetter(this.state.startX,this.state.startY)
+          if(this.state.tap)
+          {
+            this.sx=this.state.startX;
+            this.sy=this.state.startY;
           }
-          console.log('drag input',this.state.tap)
+          
+          console.log('Oninput',this.state.tap)
           
       },
       

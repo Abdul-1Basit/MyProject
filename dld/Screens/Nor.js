@@ -20,9 +20,22 @@ class NorGate extends Component {
                   ].join(' '),
         input1StartpointX:200-30,
         input1StartpointY:350+15,
-        input1EndpointX:0,
-        input1EndpointY:0
-
+        input1EndpointX:200,
+        input1EndpointY:350,
+        inputtap:false,
+        inputColor:'black',
+        input2StartpointX:200-30,
+        input2StartpointY:350+45,
+        input2EndpointX:200,
+        input2EndpointY:350,
+        input2tap:false,
+        input2Color:'black',
+        OutputStartpointX:200+85,
+        OutputStartpointY:350+30,
+        OutputEndpointX:200+85,
+        OutputEndpointY:350+30,
+        outputColor:'red',
+                  outputtap:false,
 
 }
 this.tap=false;
@@ -49,6 +62,7 @@ pointY:this.state.StartY,
 
 }
 componentWillMount() {
+  this.changeColor();
   this.gestureResponder = createResponder({
     onStartShouldSetResponder: (evt, gestureState) => true,
     onStartShouldSetResponderCapture: (evt, gestureState) => true,
@@ -56,7 +70,7 @@ componentWillMount() {
     onMoveShouldSetResponderCapture: (evt, gestureState) => true,
     onResponderGrant: (evt, gestureState) => {},
     onResponderMove: (evt, gestureState) => {
-  //      console.log('in grant')
+    //   console.log('in grant')
       if(this.tap){
           this.setState({
   
@@ -75,6 +89,12 @@ componentWillMount() {
                       
         input1StartpointX:gestureState.moveX-30,
         input1StartpointY:gestureState.moveY+15,
+        
+        input2StartpointX:gestureState.moveX-30,
+        input2StartpointY:gestureState.moveY+45,
+        OutputStartpointX:gestureState.moveX+80,
+        OutputStartpointY:gestureState.moveY+30,
+        
                  
                        
                     })
@@ -106,19 +126,12 @@ componentWillMount() {
         input1EndpointY:gestureState.moveY
        })
       }
-      console.log('gesturestate values',gestureState.moveX)
-      console.log('gesturestate values',gestureState.moveY)
-      
-      console.log('input start value',this.input1.pointX)
-      
-      console.log('input start value',this.input1.pointY)
-      console.log('input endpoint X',this.state.input1EndpointX)
-      console.log('input endpoint Y',this.state.input1EndpointY)
       
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
-     
+      if(this.tapInput1){this.func()}
+      this.changeColor()
 
     },
     onResponderTerminate: (evt, gestureState) => {},
@@ -131,13 +144,159 @@ componentWillMount() {
     moveThreshold: 2,
     debug: false
   });
+  this.gestureResponderInput2= createResponder({
+    onStartShouldSetResponder: (evt, gestureState) => true,
+    onStartShouldSetResponderCapture: (evt, gestureState) => true,
+    onMoveShouldSetResponder: (evt, gestureState) => true,
+    onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+    onResponderGrant: (evt, gestureState) => {},
+    onResponderMove: (evt, gestureState) => {
+      if(this.tapInput2)
+      {
+       this.setState({
+        input2EndpointX:gestureState.moveX,
+        input2EndpointY:gestureState.moveY
+       })
+      }
+      
+    },
+    onResponderTerminationRequest: (evt, gestureState) => true,
+    onResponderRelease: (evt, gestureState) => {
+      if(this.tapInput2){this.func2()}
+      this.changeColor()
+
+    },
+    onResponderTerminate: (evt, gestureState) => {},
+    
+    onResponderSingleTapConfirmed: (evt, gestureState) => {
+      this.tapInput2=(this.tapInput2)? false:true;
+      console.log('Nor gate Input2',this.tapInput2);
+    },
+    
+    moveThreshold: 2,
+    debug: false
+  }); 
+  this.gestureResponderOutput= createResponder({
+    onStartShouldSetResponder: (evt, gestureState) => true,
+    onStartShouldSetResponderCapture: (evt, gestureState) => true,
+    onMoveShouldSetResponder: (evt, gestureState) => true,
+    onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+    onResponderGrant: (evt, gestureState) => {},
+    onResponderMove: (evt, gestureState) => {
+      if(this.tapOutput)
+      {
+       this.setState({
+      OutputEndpointX:gestureState.moveX,
+      OutputEndpointY:gestureState.moveY
+       })
+      }
+      
+    },
+    onResponderTerminationRequest: (evt, gestureState) => true,
+    onResponderRelease: (evt, gestureState) => {
+     
+
+    },
+    onResponderTerminate: (evt, gestureState) => {},
+    
+    onResponderSingleTapConfirmed: (evt, gestureState) => {
+      this.tapOutput=(this.tapOutput)?false:true;
+      console.log('Nor gate tapOutput',this.tapOutput);
+    },
+    
+    moveThreshold: 2,
+    debug: false
+  });
+}
+func=()=>{
+  console.log('infunc')
+  if(this.tapInput1)
+  {
+    console.log('in input1')
+    for (let i = 0; i <this.props.Inputs.length; i+=3) {
+      
+    this.a=this.props.Inputs[i];
+    this.b=this.props.Inputs[i+1];
+    this.c=this.state.input1EndpointX
+    this.d=this.state.input2EndPointY;
+    if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+     {
+      console.log('MAtched')
+      this.setState({inputColor:this.props.Inputs[i+2]})
+     }
+     console.log(this.a,this.b,this.c,this.d,'for loop')
+    }
+          
+      }
+}
+func2=()=>{
+  
+  console.log('infunc')
+  if(this.tapInput2)
+  {
+    console.log('in input1')
+    for (let i = 0; i <this.props.Inputs.length; i+=3) {
+      
+    this.a=this.props.Inputs[i];
+    this.b=this.props.Inputs[i+1];
+    this.c=this.state.input2EndpointX
+    this.d=this.state.input2EndPointY;
+    if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+     {
+      console.log('MAtched')
+      this.setState({input2Color:this.props.Inputs[i+2]})
+     }
+     console.log(this.a,this.b,this.c,this.d,'for loop')
+    }
+          
+      
+}
+}
+changeColor=()=>{
+this.col1=this.state.inputColor;
+this.col2=this.state.input2Color;
+if((this.col1=='black' && this.col2=='black'))
+{
+  this.setState({
+    outputColor:'red'
+  })
+}
+else{
+  this.setState({
+    outputColor:'black'
+  })
+}
 }
 inputConnection(){
-  console.log('in input Connection')
+ // console.log('in input Connection')
   if(this.tapInput1){
     return(
       <G>
-        <Line x1={this.state.input1StartpointX} y1={this.state.input1StartpointY} x2={this.state.input1EndpointX} y2={this.state.input1StartpointY} stroke="red" strokeWidth="2"/>
+        <Line x1={this.state.input1StartpointX} y1={this.state.input1StartpointY} x2={this.state.input1EndpointX} y2={this.state.input1EndpointY} stroke="red" strokeWidth="2"/>
+      </G>
+
+    )
+  }
+}
+inputConnection2(){
+  //console.log('in input Connection2')
+  if(this.tapInput2){
+    return(
+      <G>
+        <Line x1={this.state.input2StartpointX} y1={this.state.input2StartpointY} x2={this.state.input2EndpointX} y2={this.state.input2EndpointY} stroke="red" strokeWidth="2"/>
+      </G>
+
+    )
+  }
+}
+
+outputConnection(){
+  console.log('in output Connection Nor')
+  console.log(this.tapOutput,'value is ')
+  if(this.tapOutput){
+    return(
+      <G>
+        <Line x1={this.state.OutputStartpointX} y1={this.state.OutputStartpointY} x2={this.state.OutputEndpointX} y2={this.state.OutputEndpointY} stroke="red" strokeWidth="2"/>
       </G>
 
     )
@@ -156,15 +315,23 @@ inputConnection(){
           </G>
          
          <G {...this.gestureResponderInput1}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="11" fill={this.input1.color} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="11" fill={this.state.inputColor} />
           {this.inputConnection()}
           </G>
+         
           <Circle cx={this.state.StartX+60} cy={this.state.StartY+30} r="7" fill="black" />
+       
+       <G {...this.gestureResponderInput2}>
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="11" fill={this.state.input2Color} />
+          </G>
+          {this.inputConnection2()}
+       <G {...this.gestureResponderOutput}>
+          <Circle cx={this.state.StartX+85} cy={this.state.StartY+30} r="11" fill={this.state.outputColor} />
         
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="11" fill={this.input2.color} />
-          <Circle cx={this.state.StartX+85} cy={this.state.StartY+30} r="11" fill={this.output.color} />
-        
-          
+          </G>
+
+          {this.outputConnection()}
+
          </G>   );
   }
 }

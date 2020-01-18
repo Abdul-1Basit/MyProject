@@ -24,17 +24,20 @@ class AndGate extends Component {
                         inputendPointX:185-30,
                         inputendPointY:250+15,
                         inputtap:false,
+                        inputColor:'black',
                         input2pointX:185-30,
                         input2pointY:250+45,
                         input2endPointX:185-30,
                         input2endPointY:250+45,
                         input2tap:false,
+                        input2Color:'black',
                         
                       outputpointX:185+80,
                       outputpointY:250+30,
                       outputendPointX:185+80,
                       outputendPointY:250+3,
                       outputtap:false,
+                      outputColor:'black'
                 }
 this.tap=false;
   this.input1={
@@ -93,7 +96,9 @@ componentWillMount() {
           }
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+        this.changeOutput()
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -116,23 +121,25 @@ componentWillMount() {
       onMoveShouldSetResponderCapture: (evt, gestureState) => true,
       onResponderGrant: (evt, gestureState) => {},
       onResponderMove: (evt, gestureState) => {
-            if(this.state.inputtap)
-            {
-              this.setState({
-                inputendPointX:gestureState.moveX,
-                inputendPointY:gestureState.moveY,
-              })
-
-            }
-            console.log('start valye',this.state.inputpointX)
-            console.log('end point',this.state.inputpointY)
-            console.log("input1.endpointx",this.state.inputendPointX)
-            console.log("input1.endpointY",this.state.inputendPointY)
+          
+        if(this.state.inputtap)
+        {
+          this.setState({
+            inputendPointX:gestureState.moveX,
+            inputendPointY:gestureState.moveY,
+          })
+          console.log(this.state.inputendPointX)
+        }
             
 
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+      
+  if(this.state.inputtap){this.func()}
+  this.changeOutput()
+      
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -169,7 +176,11 @@ componentWillMount() {
 
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+            
+  if(this.state.input2tap){this.func2()}
+  this.changeOutput()
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -198,15 +209,13 @@ componentWillMount() {
               })
 
             }
-            console.log('start valye',this.state.outputpointX)
-            console.log('end point',this.state.outputpointY)
-            console.log("output.endpointx",this.state.outputendPointX)
-            console.log("output.endpointY",this.state.outputendPointY)
             
 
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+        this.changeOutput()
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -221,28 +230,78 @@ componentWillMount() {
       debug: false
     });
   }
+changeOutput=()=>{
+  this.col1=this.state.inputColor;
+  this.col2=this.state.input2Color;
+  if(this.col1=='red' && this.col2=='red')
+  {
+    this.setState({
+      outputColor:'red'
+    })
+  }
+}
+
   func=()=>{
-        
-    if((this.input1.color=='red')||(this.input2.color=='red'))
+    console.log('infunc')
+    if(this.state.inputtap)
     {
-      this.output.color='red';
+      console.log('in input1')
+      for (let i = 0; i <this.props.Inputs.length; i+=3) {
+        
+      this.a=this.props.Inputs[i];
+      this.b=this.props.Inputs[i+1];
+      this.c=this.state.inputendPointX;
+      this.d=this.state.inputendPointY;
+      if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+       {
+        console.log('MAtched')
+        this.setState({inputColor:this.props.Inputs[i+2]})
+       }
+       console.log(this.a,this.b,this.c,this.d,'for loop')
+      }
+            
+        }
+  }
+  func2=()=>{
+    
+      console.log('infunc')
+      if(this.state.input2tap)
+      {
+        console.log('in input1')
+        for (let i = 0; i <this.props.Inputs.length; i+=3) {
+          
+        this.a=this.props.Inputs[i];
+        this.b=this.props.Inputs[i+1];
+        this.c=this.state.input2endPointX;
+        this.d=this.state.input2endPointY;
+        if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+         {
+          console.log('MAtched')
+          this.setState({input2Color:this.props.Inputs[i+2]})
+         }
+         console.log(this.a,this.b,this.c,this.d,'for loop')
+        }
+              
+          
     }
   }
   inputConnection=()=>{
-    console.log('in input connection',this.state.inputtap)
-    if(this.state.inputtap)
-    {
-      console.log('IN IFF')
+   //console.log('in input connection',this.state.inputtap)
+    
+    //  console.log(this.a,this.props.Inputs[0].a,this.b,this.props.Inputs[0].b)
+      //console.log('IN IFF')
+      if(this.state.inputtap){
+        
       return(
         <G>
           
            <Line x1={this.state.inputpointX} y1={this.state.inputpointY} x2={this.state.inputendPointX} y2={this.state.inputendPointY} stroke="red" strokeWidth="2" />
         </G>
       )
-    }
-  }
+    }}
+  
   inputConnection2=()=>{
-    console.log('in input2 connection',this.state.input2tap)
+   // console.log('in input2 connection',this.state.input2tap)
     if(this.state.input2tap)
     {
       console.log('IN input2')
@@ -255,7 +314,7 @@ componentWillMount() {
     }
   }
   outputConnection=()=>{
-    console.log('in output connection',this.state.outputtap)
+    //console.log('in output connection',this.state.outputtap)
     if(this.state.outputtap)
     {
       console.log('IN Output')
@@ -267,10 +326,9 @@ componentWillMount() {
       )
     }
   }
-
   render() {
     return (
-    <G >{this.func()}
+    <G >
         <G {...this.gestureResponder} >
           <Path d={this.state.pathData} stroke="black" strokeWidth="2"  fill='none'/>
           <Path d={this.state.pathData2} stroke="black" strokeWidth="2"  fill='none'/>
@@ -281,14 +339,14 @@ componentWillMount() {
           <Line x1={this.state.StartX+45} y1={this.state.StartY+30} x2={this.state.StartX+80} y2={this.state.StartY+30} stroke="red" strokeWidth="2" />
          
           <G {...this.gestureResponderInput1}>
-                      <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="12" fill={this.input1.color} />
+                      <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="12" fill={this.state.inputColor} />
     
                       </G>
                       <G {...this.gestureResponderInput2}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="12" fill={this.input2.color} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="12" fill={this.state.input2Color} />
           </G>
           <G {...this.gestureResponderOutput}>
-          <Circle cx={this.state.StartX+80} cy={this.state.StartY+30} r="12" fill={this.output.color} />
+          <Circle cx={this.state.StartX+80} cy={this.state.StartY+30} r="12" fill={this.state.outputColor} />
           </G>
           {this.inputConnection()}
           {this.inputConnection2()}
