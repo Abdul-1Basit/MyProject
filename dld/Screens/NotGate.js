@@ -8,9 +8,7 @@ class NotGate extends Component {
   constructor(props) {
     super(props);
     this.input={
-      color:'black',
-     
-      tap:false
+  tap:false
     }
     this.output={
             color:'red',
@@ -41,12 +39,15 @@ class NotGate extends Component {
             outputtap:false
 
       }
+      this.previousXVal=170+13*4;
+      this.previousYVal=70+15*2
     
 this.tap=false;
      // this.logiColor='black';
 }
 componentWillMount() {
-  
+  this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputcolor);
+  //this.changeGateOutput();
   this.gestureResponder = createResponder({
     onStartShouldSetResponder: (evt, gestureState) => true,
     onStartShouldSetResponderCapture: (evt, gestureState) => true,
@@ -77,7 +78,20 @@ componentWillMount() {
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
-        /*this.input.color=this.state.inputcolor;
+     if(this.tap){  
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputcolor,this.state.startX+13*4,this.state.startY+30);
+      this.previousXVal=this.state.startX+13*4;
+      this.previousYVal=this.state.startY+30;
+      console.log('gesture release output is ',this.state.outputcolor)
+     }
+        /*
+        //gate output maping
+         if(this.tap){
+        this.props.del(this.sx,this.sy,this.state.inputcolor,this.state.startX,this.state.startY)
+   
+      }
+      //----------yahan t
+        this.input.color=this.state.inputcolor;
         if(this.input.color=='black'){
           this.output.color='red'
         }
@@ -93,6 +107,7 @@ componentWillMount() {
       this.output.color=(this.input.color=='red')?'black':'red';
       console.log('OUTPUTCOLOR',this.output.color)
       */ 
+    
     },
     onResponderTerminate: (evt, gestureState) => {},
     
@@ -107,28 +122,26 @@ componentWillMount() {
     debug: false
   */
   });
-  console.log('componentwillmount mei')
+  //console.log('componentwillmount mei')
   this.gestureResponder1= createResponder({
     onStartShouldSetResponder: (evt, gestureState) => true,
     onStartShouldSetResponderCapture: (evt, gestureState) => true,
     onMoveShouldSetResponder: (evt, gestureState) => true,
     onMoveShouldSetResponderCapture: (evt, gestureState) => true,
     onResponderGrant: (evt, gestureState) => {
-      console.log('inGrannt of not input')
+     // console.log('inGrannt of not input')
     },
     onResponderMove: (evt, gestureState) => {
     if(this.state.inputtap){ 
-      
-      this.input.color=this.state.inputcolor;
+    //  this.input.color=this.state.inputcolor;
        this.setState(
         {
           
-          outputcolor:(this.input.color==='red')?'black':'red',
           inputEndPointX:gestureState.moveX,
           inputEndPointY:gestureState.moveY
         } 
       )
-      if(this.checkOnInputValue(this.props.OnInputXValue,this.props.OnInputYValue))
+     /* if(this.checkOnInputValue(this.props.OnInputXValue,this.props.OnInputYValue))
       {
         console.log('InputValue matched','old value of state inputcolor',this.state.inputcolor)
          this.setState({
@@ -143,7 +156,7 @@ componentWillMount() {
           inputcolor:'black',
           outputcolor:'red'
         })
-      }
+      }*/
         
     }
  //     console.log('value of inputstartpoint',this.state.inputStartPointX)
@@ -153,7 +166,16 @@ componentWillMount() {
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
-     
+     if(this.state.inputtap){
+       
+      this.checkInput();
+      
+     /*
+     //code for maping gate output in state
+            this.props.del(this.sx,this.sy,this.state.inputcolor,this.state.startX,this.state.startY)
+   
+     */
+     }
       /*console.log('OUTPUTCOLOR',this.output.color)
       this.output.color=(this.input.color=='red')?'black':'red';
       console.log('OUTPUTCOLOR',this.output.color)
@@ -178,6 +200,7 @@ componentWillMount() {
         inputtap:this.input.tap
       })
       console.log('Not gate input set to',this.state.inputtap)
+     // this.changeGateOutput();
     },
     
     moveThreshold: 2,
@@ -189,15 +212,15 @@ componentWillMount() {
     onMoveShouldSetResponder: (evt, gestureState) => true,
     onMoveShouldSetResponderCapture: (evt, gestureState) => true,
     onResponderGrant: (evt, gestureState) => {
-      console.log('inGrannt of not output')
+     // console.log('inGrannt of not output')
     },
     onResponderMove: (evt, gestureState) => {
-     if(this.output.tap){
-      this.input.color=this.state.inputcolor;
+     if(this.state.outputtap){
+    //  this.input.color=this.state.inputcolor;
       
       this.setState(
         {
-          outputcolor:(this.input.color==='red')?'black':'red',
+        //  outputcolor:(this.input.color==='red')?'black':'red',
           outputEndPointX:gestureState.moveX,
           outputEndPointY:gestureState.moveY
         }
@@ -211,6 +234,7 @@ componentWillMount() {
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
+      
     /*  this.input.color=this.state.inputcolor;
       if(this.input.color=='black'){
         this.output.color='red'
@@ -228,16 +252,19 @@ console.log('OUTPUTCOLOR',this.output.color)
 this.output.color=(this.input.color=='red')?'black':'red';
 console.log('OUTPUTCOLOR',this.output.color)
     */  
-   if(this.output.tap){
+  /* if(this.output.tap){
     this.props.AssignOutput(this.state.outputEndPointX,this.state.outputEndPointY,this.state.outputcolor)
    console.log('calling output fucntion')
-   }
+   }*/
    },
     onResponderTerminate: (evt, gestureState) => {},
     
     onResponderSingleTapConfirmed: (evt, gestureState) => {
-      this.output.tap=(this.output.tap)?false:true;
-      console.log('Not gate output set to',this.output.tap)
+      this.output.tap=(this.state.outputtap)?false:true;
+      this.setState({
+        outputtap:this.output.tap
+      })
+      console.log('Not gate output set to',this.state.outputtap)
     },
     
     moveThreshold: 2,
@@ -247,29 +274,108 @@ console.log('OUTPUTCOLOR',this.output.color)
   //this.output.color=(this.input.color=='black')?'red':'black';
 }
 
+checkInput=()=>{
+  console.log('checking input connection')
+  if(this.state.inputtap)
+  {
+    this.inputArray=this.props.Inputs;
+    this.inputByGates=this.props.GateOutputs;
+  //  console.log('in for loop not gate input check')
+    for (let i = 0; i <this.inputArray.length; i+=3) {
+      
+    this.a=this.inputArray[i].toFixed(2);
+    this.b=this.inputArray[i+1].toFixed(2);
+    this.c=this.state.inputEndPointX.toFixed(2);
+    this.d=this.state.inputEndPointY.toFixed(2);
+    if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11 &&this.b-this.d>-11))
+     {
+      console.log('MAtched')
+    this.tcol=(this.inputArray[i+2]==='red')?'black':'red';
+
+    
+      this.setState({
+        inputcolor:this.inputArray[i+2],
+        outputcolor:this.tcol,
+      }) 
+      console.log('ASSIGNING NEW LOCATION OF GATE OUTPUT')
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.tcol,this.state.startX+13*4,this.state.startY+30);
+      this.previousXVal=this.state.startX+13*4;
+      this.previousYVal=this.state.startY+30;
+     console.log('=====>',this.previousXVal,this.previousYVal,this.tcol,'stateopt',this.state.outputcolor,this.state.startX+13*4,this.state.startY+30)
+      return;
+     }
+    
+    }
+    for (let i = 0; i <this.inputByGates.length; i+=3) {
+      
+      this.a=this.inputByGates[i].toFixed(2);
+      this.b=this.inputByGates[i+1].toFixed(2);
+      this.c=this.state.inputEndPointX.toFixed(2);
+      this.d=this.state.inputEndPointY.toFixed(2);
+      if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11 &&this.b-this.d>-11))
+       {
+        console.log('MAtched')
+      this.tcol=(this.inputByGates[i+2]==='red')?'black':'red';
+  
+      
+        this.setState({
+          inputcolor:this.inputByGates[i+2],
+          outputcolor:this.tcol,
+        }) 
+        console.log('Asgng Gate Output To this gates input')
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.tcol,this.state.startX+13*4,this.state.startY+30);
+        this.previousXVal=this.state.startX+13*4;
+        this.previousYVal=this.state.startY+30;
+        // console.log(this.a,this.b,this.c,this.d)
+        return;
+       }
+      
+      }
+      
+
+      
+}
+}
 drawInputLine=()=>{
   if(this.state.inputtap){
    // console.log('IN IF TRUE')
     //console.log(this.props.OnInputXValue,this.props.OnInputYValue,this.state.inputEndPointX.toFixed(2),this.state.inputEndPointY.toFixed(2))
-    console.log('not gate input is true')
+ //   console.log('not gate input is true')
     
    
-     
-    
   return(
     <Line x1={this.state.inputStartPointX} y1={this.state.inputStartPointY} x2={this.state.inputEndPointX} y2={this.state.inputEndPointY} stroke="red" strokeWidth="2" />
   )
 }
 }
+changeGateOutput=()=>{
+  if(this.state.inputtap){
+  this.col=this.state.inputcolor;
+  this.setState({
+    outputcolor:(this.col==='red')?'black':'red'
+  })
+  
+  console.log('changefunction',this.col,'stateinput color',this.state.inputcolor,this.state.outputcolor)
+  this.assignOutputLocationtoState();
+  
+  }
+}
+assignOutputLocationtoState=()=>{
+  console.log('changing outputvalues')
+  this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputcolor,this.state.startX+13*4,this.state.startY+30);
+  this.previousXVal=this.state.startX;
+  this.previousYVal=this.state.startY;
+}
+
 drawOutputLine=()=>{
-  if(this.output.tap){
-    console.log('In NOtGate Output Line')
+  if(this.state.outputtap){
+   // console.log('In NOtGate Output Line')
      return(
     <Line x1={this.state.outputStartPointX} y1={this.state.outputStartPointY} x2={this.state.outputEndPointX} y2={this.state.outputEndPointY} stroke="red" strokeWidth="2" />
   )
 }
 }
-checkOnInputValue=(a,b)=>{
+/*checkOnInputValue=(a,b)=>{
   console.log(a,b,this.state.inputEndPointX,this.state.inputEndPointY)
   if(((((a-this.state.inputEndPointX.toFixed(2))<7) &&((a-this.state.inputEndPointX.toFixed(2))>-7))||(((this.state.inputEndPointX.toFixed(2)-a)<7)&&((this.state.inputEndPointX.toFixed(2)-a)>-7)))||((((b-this.state.inputEndPointY.toFixed(2))<7) &&((b-this.state.inputEndPointY.toFixed(2))>-7))||((( this.state.inputEndPointY.toFixed(2)-b)>-7)&& ((this.state.inputEndPointY.toFixed(2)-b)<7))))
   {
@@ -283,7 +389,7 @@ checkOnInputValue=(a,b)=>{
   
 }
   return false;
-}
+}*/
 
   render() {
     return (
