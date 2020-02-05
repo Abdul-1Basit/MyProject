@@ -96,9 +96,9 @@ componentWillMount() {
       onResponderRelease: (evt, gestureState) => {
        // this.changeColor()
       if(this.tap){
-        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX,this.state.StartY);
-        this.previousXVal=this.state.StartX;
-        this.previousYVal=this.state.StartY;
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+80,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+80;
+        this.previousYVal=this.state.StartY+30;
       }
       },
       onResponderTerminate: (evt, gestureState) => {},
@@ -143,7 +143,7 @@ componentWillMount() {
        this.setState({
          inputtap:this.input1.tap?false:true
        })
-        console.log('and gate input1',this.state.inputtap)
+        console.log('or gate input1',this.state.inputtap)
       },
       
       moveThreshold: 2,
@@ -280,7 +280,7 @@ componentWillMount() {
     }
   }
   func2=()=>{
-    if(this.state.inputtap)
+    if(this.state.input2tap)
     {
       console.log('checking Input for Or Gates input 2');
       
@@ -294,7 +294,7 @@ componentWillMount() {
       if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
        {
         console.log('MAtched input 2')
-        this.OCColor=(this.props.Inputs[i+2]=='red'||this.state.input2Color=='red')?'red':'black'
+        this.OCColor=(this.props.Inputs[i+2]=='red'||this.state.inputColor=='red')?'red':'black'
         this.setState({input2Color:this.props.Inputs[i+2],
                       outputColor:this.OCColor})
         
@@ -318,7 +318,7 @@ componentWillMount() {
         if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
          {
           console.log('MAtched input 2 with a gate outputtt')
-          this.OCColor=(this.inputByGates[i+2]=='red'||this.state.input2Color=='red')?'red':'black'
+          this.OCColor=(this.inputByGates[i+2]=='red'||this.state.inputColor=='red')?'red':'black'
           this.setState({input2Color:this.inputByGates[i+2],
                         outputColor:this.OCColor})
           

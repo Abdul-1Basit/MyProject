@@ -22,17 +22,19 @@ class NandGate extends Component {
                       inputendPointX:50-30,
                       inputendPointY:250+15,
                       inputtap:false,
+                      inputColor:'black',
                       input2pointX:50+50,
                       input2pointY:250+30,
                       input2endPointX:50+50,
                       input2endPointY:250+30,
                       input2tap:false,
-                      
+                      input2Color:'black',
                     outputpointX:50+80,
                     outputpointY:250+30,
                     outputendPointX:50+80,
-                    outputendPointY:250+3,
+                    outputendPointY:250+30,
                     outputtap:false,
+                    outputColor:'red',
                }
                this.tap=false;
                this.input
@@ -54,8 +56,13 @@ this.output={
     pointY:this.state.StartY,
     tap:false
   }
+  
+this.previousXVal=50+80;
+this.previousYVal=250+30;
 }
 componentWillMount() {
+  
+  this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
     this.gestureResponder = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
       onStartShouldSetResponderCapture: (evt, gestureState) => true,
@@ -87,7 +94,15 @@ componentWillMount() {
         }
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+        if(this.tap){
+          
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+80,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+80;
+        this.previousYVal=this.state.StartY+30;
+     
+        }
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -119,7 +134,11 @@ componentWillMount() {
 
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+        if(this.state.inputtap){
+          this.func()
+        }
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -152,7 +171,11 @@ componentWillMount() {
 
       },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+        if(this.state.input2tap){
+          this.func2()
+        }
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
@@ -199,11 +222,124 @@ componentWillMount() {
       debug: false
     });
   }
-  inputConnection=()=>{
-    console.log('in input connection',this.state.inputtap)
+  func=()=>{
     if(this.state.inputtap)
     {
-      console.log('IN Nand Input line')
+      console.log('checking Input for NAnd Gates input 1');
+      
+      this.inputByGates=this.props.GateOutputs;
+      for (let i = 0; i <this.props.Inputs.length; i+=3) {
+        
+      this.a=this.props.Inputs[i];
+      this.b=this.props.Inputs[i+1];
+      this.c=this.state.inputendPointX;
+      this.d=this.state.inputendPointY;
+      if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+       {
+        console.log('MAtched')
+        this.OCColor=(this.props.Inputs[i+2]=='red'&&this.state.input2Color=='red')?'black':'red'
+        this.setState({inputColor:this.props.Inputs[i+2],
+                      outputColor:this.OCColor})
+        
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+80;
+        this.previousYVal=this.state.StartY+30;
+        console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+        
+        console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+        return;
+       }
+      
+      }
+      for (let i = 0; i <this.inputByGates.length; i+=3) {
+        
+        this.a=this.inputByGates[i];
+        this.b=this.inputByGates[i+1];
+        this.c=this.state.inputendPointX;
+        this.d=this.state.inputendPointY;
+        if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+         {
+          console.log('MAtched with a gate outputtt')
+          this.OCColor=(this.inputByGates[i+2]=='red'&&this.state.input2Color=='red')?'black':'red'
+          this.setState({inputColor:this.inputByGates[i+2],
+                        outputColor:this.OCColor})
+          
+          this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
+          this.previousXVal=this.state.StartX+80;
+          this.previousYVal=this.state.StartY+30;
+          
+          console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+          console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+     
+          return;
+         }
+        
+        }
+            
+    }
+  }
+  func2=()=>{
+    if(this.state.input2tap)
+    {
+      console.log('checking Input for NAnd Gates input 2');
+      
+      this.inputByGates=this.props.GateOutputs;
+      for (let i = 0; i <this.props.Inputs.length; i+=3) {
+        
+      this.a=this.props.Inputs[i];
+      this.b=this.props.Inputs[i+1];
+      this.c=this.state.input2endPointX;
+      this.d=this.state.input2endPointY;
+      if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+       {
+        console.log('MAtched input 2')
+        this.OCColor=(this.props.Inputs[i+2]=='red'&&this.state.inputColor=='red')?'black':'red'
+        this.setState({input2Color:this.props.Inputs[i+2],
+                      outputColor:this.OCColor})
+        
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+80;
+        this.previousYVal=this.state.StartY+30;
+        
+        console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+        console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+     
+        return;
+       }
+      
+      }
+      for (let i = 0; i <this.inputByGates.length; i+=3) {
+      
+        this.a=this.inputByGates[i];
+        this.b=this.inputByGates[i+1];
+        this.c=this.state.input2endPointX;
+        this.d=this.state.input2endPointY;
+        if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+         {
+          console.log('MAtched input 2 with a gate outputtt')
+          this.OCColor=(this.inputByGates[i+2]=='red'&&this.state.inputColor=='red')?'black':'red'
+          this.setState({input2Color:this.inputByGates[i+2],
+                        outputColor:this.OCColor})
+          
+          this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
+          this.previousXVal=this.state.StartX+80;
+          this.previousYVal=this.state.StartY+30;
+          
+          console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+          console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+     
+          return;
+         }
+        
+        }
+            
+    }
+  }
+  inputConnection=()=>{
+   // console.log('in input connection',this.state.inputtap)
+    if(this.state.inputtap)
+    {
+    //  console.log('IN Nand Input line')
       return(
         <G>
           
@@ -213,10 +349,10 @@ componentWillMount() {
     }
   }
   inputConnection2=()=>{
-    console.log('in input2 connection',this.state.input2tap)
+   // console.log('in input2 connection',this.state.input2tap)
     if(this.state.input2tap)
     {
-      console.log('IN Nand input2 line')
+    //  console.log('IN Nand input2 line')
       return(
         <G>
           
@@ -226,10 +362,10 @@ componentWillMount() {
     }
   }
   outputConnection=()=>{
-    console.log('in output connection',this.state.outputtap)
+   // console.log('in output connection',this.state.outputtap)
     if(this.state.outputtap)
     {
-      console.log('IN Nand Output')
+     // console.log('IN Nand Output')
       return(
         <G>
           
@@ -250,16 +386,16 @@ componentWillMount() {
           <Line x1={this.state.StartX+45} y1={this.state.StartY+30} x2={this.state.StartX+80} y2={this.state.StartY+30} stroke="red" strokeWidth="2" />
           </G>
           <G {...this.gestureResponderInput1}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="10" fill={this.input1.color} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="12" fill={this.state.inputColor} />
           </G>
           {this.inputConnection()}
           <Circle cx={this.state.StartX+50} cy={this.state.StartY+30} r="7" fill="black" />
           <G {...this.gestureResponderInput2}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="10" fill={this.input2.color} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="12" fill={this.state.input2Color} />
           </G>
           {this.inputConnection2()}
           <G {...this.gestureResponderOutput}>
-          <Circle cx={this.state.StartX+80} cy={this.state.StartY+30} r="10" fill={this.output.color} />
+          <Circle cx={this.state.StartX+80} cy={this.state.StartY+30} r="12" fill={this.state.outputColor} />
           </G>
           {this.outputConnection()}
          </G>

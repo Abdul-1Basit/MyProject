@@ -33,7 +33,7 @@ class XnorGate extends Component {
                   input2endPointX:150-30,
                   input2endPointY:150+45,
                   input2tap:false,
-                  inputColor:'black',
+                  input2Color:'black',
                   outputpointX:150+87,
                   outputpointY:150+30,
                   outputendPointX:150+87,
@@ -60,10 +60,13 @@ pointY:this.state.StartY,
 tap:false,
 }  
 this.tap=false;
-
+this.previousXVal=150+87;
+this.previousYVal=150+30
 
 }
 componentWillMount() {
+  
+  this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
   
   this.gestureResponder = createResponder({
     onStartShouldSetResponder: (evt, gestureState) => true,
@@ -104,7 +107,11 @@ componentWillMount() {
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
-      this.changeColor()
+     if(this.tap){
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+87,this.state.StartY+30);
+      this.previousXVal=this.state.StartX+87;
+      this.previousYVal=this.state.StartY+30;
+     }
     },
     onResponderTerminate: (evt, gestureState) => {},
     
@@ -139,8 +146,9 @@ componentWillMount() {
     },
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
-      if(this.state.inputtap){this.func()}
-      this.changeColor()
+      if(this.state.inputtap){this.func()
+        console.log('Ooupuit',this.state.outputColor)
+        }
     },
     onResponderTerminate: (evt, gestureState) => {},
     
@@ -176,7 +184,6 @@ componentWillMount() {
     onResponderTerminationRequest: (evt, gestureState) => true,
     onResponderRelease: (evt, gestureState) => {
       if(this.state.input2tap){this.func2()}
-      this.changeColor()
     },
     onResponderTerminate: (evt, gestureState) => {},
     
@@ -233,48 +240,141 @@ componentWillMount() {
 
 
 func=()=>{
-  console.log('infunc')
   if(this.state.inputtap)
   {
-    console.log('in input1')
+    console.log('checking Input for Or Gates input 1');
+    
+    this.inputByGates=this.props.GateOutputs;
     for (let i = 0; i <this.props.Inputs.length; i+=3) {
       
     this.a=this.props.Inputs[i];
     this.b=this.props.Inputs[i+1];
     this.c=this.state.inputendPointX;
     this.d=this.state.inputendPointY;
-    if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+    if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
      {
       console.log('MAtched')
-      this.setState({inputColor:this.props.Inputs[i+2]})
-     }
-     console.log(this.a,this.b,this.c,this.d,'for loop')
-    }
-          
+      if((this.inputByGates[i+2]=='red'&&this.state.input2Color=='red')||(this.inputByGates[i+2]=='black'&&this.state.input2Color=='black'))
+      {
+        console.log('found a match')
+        this.OCColor='red';
       }
+      else{
+        this.OCColor='black';
+      } this.setState({inputColor:this.props.Inputs[i+2],
+                    outputColor:this.OCColor})
+      
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+87,this.state.StartY+30);
+      this.previousXVal=this.state.StartX+87;
+      this.previousYVal=this.state.StartY+30;
+      console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+      
+      console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+      return;
+     }
+    
+    }
+    for (let i = 0; i <this.inputByGates.length; i+=3) {
+      
+      this.a=this.inputByGates[i];
+      this.b=this.inputByGates[i+1];
+      this.c=this.state.inputendPointX;
+      this.d=this.state.inputendPointY;
+      if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+       {
+        console.log('MAtched with a gate outputtt')
+        if((this.inputByGates[i+2]=='red'&&this.state.input2Color=='red')||(this.inputByGates[i+2]=='black'&&this.state.input2Color=='black'))
+        {
+          this.OCColor='red';
+        }
+        else{
+          this.OCColor='black';
+        } 
+      
+        this.setState({inputColor:this.inputByGates[i+2],
+                      outputColor:this.OCColor})
+        
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+87,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+87;
+        this.previousYVal=this.state.StartY+30;
+        
+        console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+        console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+   
+        return;
+       }
+      
+      }
+          
+  }
 }
 func2=()=>{
-  
-  console.log('infunc')
   if(this.state.input2tap)
   {
-    console.log('in input1')
+    console.log('checking Input for Or Gates input 2');
+    
+    this.inputByGates=this.props.GateOutputs;
     for (let i = 0; i <this.props.Inputs.length; i+=3) {
       
     this.a=this.props.Inputs[i];
     this.b=this.props.Inputs[i+1];
     this.c=this.state.input2endPointX;
     this.d=this.state.input2endPointY;
-    if((this.a-this.c<6 && this.a-this.c>-6)||(this.b-this.d<6 &&this.b-this.d>-6))
+    if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
      {
-      console.log('MAtched')
-      this.setState({input2Color:this.props.Inputs[i+2]})
-     }
-     console.log(this.a,this.b,this.c,this.d,'for loop')
-    }
-          
+      console.log('MAtched input 2')
+      if((this.inputByGates[i+2]=='red'&&this.state.inputColor=='red')||(this.inputByGates[i+2]=='black'&&this.state.inputColor=='black'))
+      {
+        this.OCColor='red';
+      }
+      else{
+        this.OCColor='black';
+      } 
+       this.setState({input2Color:this.props.Inputs[i+2],
+                    outputColor:this.OCColor})
       
-}
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+87,this.state.StartY+30);
+      this.previousXVal=this.state.StartX+87;
+      this.previousYVal=this.state.StartY+30;
+      
+      console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+      console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+   
+      return;
+     }
+    
+    }
+    for (let i = 0; i <this.inputByGates.length; i+=3) {
+    
+      this.a=this.inputByGates[i];
+      this.b=this.inputByGates[i+1];
+      this.c=this.state.input2endPointX;
+      this.d=this.state.input2endPointY;
+      if((this.a-this.c<11 && this.a-this.c>-11)&&(this.b-this.d<11&&this.b-this.d>-11))
+       {
+        console.log('MAtched input 2 with a gate outputtt')
+        if((this.inputByGates[i+2]=='red'&&this.state.inputColor=='red')||(this.inputByGates[i+2]=='black'&&this.state.inputColor=='black'))
+        {
+          this.OCColor='red';
+        }
+        else{
+          this.OCColor='black';
+        }   this.setState({input2Color:this.inputByGates[i+2],
+                      outputColor:this.OCColor})
+        
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+87,this.state.StartY+30);
+        this.previousXVal=this.state.StartX+87;
+        this.previousYVal=this.state.StartY+30;
+        
+        console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
+        console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
+   
+        return;
+       }
+      
+      }
+          
+  }
 }
 changeColor=()=>{
 this.col1=this.state.inputColor;
@@ -287,10 +387,10 @@ if((this.col1=='red' && this.col2=='red'))
 }
 }
 inputConnection=()=>{
-  console.log('in input connection',this.state.inputtap)
+ // console.log('in input connection',this.state.inputtap)
   if(this.state.inputtap)
   {
-    console.log('IN IFF')
+  //  console.log('IN IFF')
     return(
       <G>
         
@@ -300,10 +400,10 @@ inputConnection=()=>{
   }
 }
 inputConnection2=()=>{
-  console.log('in input2 connection',this.state.input2tap)
+  //console.log('in input2 connection',this.state.input2tap)
   if(this.state.input2tap)
   {
-    console.log('IN input2')
+    //console.log('IN input2')
     return(
       <G>
         
@@ -313,10 +413,10 @@ inputConnection2=()=>{
   }
 }
 outputConnection=()=>{
-  console.log('in output connection',this.state.outputtap)
+  //console.log('in output connection',this.state.outputtap)
   if(this.state.outputtap)
   {
-    console.log('IN Output')
+    //console.log('IN Output')
     return(
       <G>
         
@@ -336,16 +436,16 @@ outputConnection=()=>{
           <Line x1={this.state.StartX+55} y1={this.state.StartY+30} x2={this.state.StartX+85} y2={this.state.StartY+30} stroke="red" strokeWidth="2" />
           </G>
           <G {...this.gestureResponderInput1}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="10" fill={this.state.inputColor} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="12" fill={this.state.inputColor} />
           </G>
           {this.inputConnection()}
           <Circle cx={this.state.StartX+60} cy={this.state.StartY+30} r="7" fill="black" />
          <G {...this.gestureResponderInput2}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="10" fill={this.state.input2Color} />
+          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="12" fill={this.state.input2Color} />
           </G>
           {this.inputConnection2()}
          <G {...this.gestureResponderOutput}>
-          <Circle cx={this.state.StartX+85} cy={this.state.StartY+30} r="10" fill={this.state.outputColor} />
+          <Circle cx={this.state.StartX+85} cy={this.state.StartY+30} r="12" fill={this.state.outputColor} />
           </G>
           {this.outputConnection()}
          </G>   );

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Animated,StatusBar,Modal,Button ,Text, TouchableOpacity,SafeAreaView,ScrollView, ImagePickerIOS, NavigatorIOS} from 'react-native';
-import {Svg,G} from 'react-native-svg';
+import { View, Animated,StatusBar,Modal , TouchableOpacity,SafeAreaView,ScrollView, ImagePickerIOS, NavigatorIOS} from 'react-native';
+import {Svg,Rect,Line,Text,G} from 'react-native-svg';
 import NotGate from './NotGate';
 import Practice from './Practice'
 import Nand from './Nand'
@@ -12,7 +12,7 @@ import OrGate from './OrGate';
 import {createResponder} from 'react-native-gesture-responder';
 
 import { AppLoading } from 'expo';
-import { Container, Header, Title, Content, Icon, Left, Body,Right} from "native-base";
+import { Container, Header, Title, Content,Button, Icon, Left, Body,Right} from "native-base";
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import NorGate from './Nor';
@@ -22,7 +22,8 @@ import PracticeScreen from '../Folder/PracticeScreen'
 import Output from './Output'
 import ModalWork from './ModalWork'
 
-const component1 = () => <G><OrGate/></G>
+const component1 = () => <G> <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
+</G>
   const component2 = () => <G><NotGate/></G>
   const component3 = () => <G><Nand/></G>
 
@@ -41,9 +42,293 @@ class NewCircuit extends Component {
    
   
   }
+  static navigationOptions = {
+    header: null,
+  };
   
   componentWillMount(){
-    //Drawer.
+    this.gestureResponder = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.vbl=this.state.isVisibile;
+        this.setState({
+          isVisibile:(this.vbl)?false:true
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder1 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        console.log("gasda")
+       this.eu=this.state.bodyContents;
+       this.eu.push(<OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />)
+       this.setState({
+         bodyContents:this.eu
+       })
+       
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder2 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(   <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
+      
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+       
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder3 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <AndGate Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder4 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <OrGate Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder5 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(	<NotGate  Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder6 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <Nand Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder7= createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <Nor Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder8 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <XorGate Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder9 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        this.eu=this.state.bodyContents;
+        this.eu.push(  <XnorGate Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+        )
+        this.setState({
+          bodyContents:this.eu
+        })
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    
   }
   setGateInputs=(a,b,c)=>{
     this.temp=this.state.GateInputs;
@@ -127,29 +412,47 @@ firstAssignmentOfOutput=(a,b,c)=>{
   
 }
 
+showDropDownMenu=()=>{
+  if(this.state.isVisibile){
+  return(<G>
+<G {...this.gestureResponder1}>
+<Practice yVal={60} gateName={'ON Input'}/>
+</G>
 
-
-
-
-contentAdd=()=>{
-  console.log('in content funcionts')
-  this.faltuValue=this.state.bodyContents;
-  
-  this.faltuValue.push( <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
-       
-
-   )
-   this.faltuValue.push(   <OrGate Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
-   
-     )
-     this.faltuValue.push(   <NotGate  Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
- 
-       )
-   
-   this.setState({
-     bodyContents:this.faltuValue
-   })
+<G {...this.gestureResponder2}>
+<Practice yVal={90} gateName={'OFF Input'}/>
+</G>
+<G {...this.gestureResponder3}>
+<Practice yVal={120} gateName={'And Gate'}/>
+</G>
+<G {...this.gestureResponder4}>
+<Practice yVal={150} gateName={'Or Gate'}/>
+</G>
+<G {...this.gestureResponder5}>
+<Practice yVal={180} gateName={'Not Gate'}/>
+</G>
+<G {...this.gestureResponder6}>
+<Practice yVal={210} gateName={'Nand Gate'}/>
+</G>
+<G {...this.gestureResponder7}>
+<Practice yVal={240} gateName={'Nor Gate'}/>
+</G>
+<G {...this.gestureResponder8}>
+<Practice yVal={270} gateName={'Xor Gate'}/>
+</G>
+<G {...this.gestureResponder9}>
+<Practice yVal={300} gateName={'Xnor Gate'}/>
+</G>
+</G>
+  )
 }
+return(
+  <G>
+</G>
+)
+}
+
+
 
   render() {/*
     if (!this.state.isReady) {
@@ -157,56 +460,37 @@ contentAdd=()=>{
     }
 */
     return (<View >
-       <Container>
-        <Header style={{height:60}}>
-        
-          
-         
-          
-          <Button
-  onPress={() => {
-   console.log('buttons')
-  }}
-  title="Show Gates"
-/>
-
-      <ScrollView horizontal={true}>      
-        <View style={{height:20}}>
-          <Button 
-                onPress={this.contentAdd}
-                title="And Gate"
-              />
- <Button 
-                onPress={this.contentAdd}
-                title=" Gate"
-              />
-               <Button 
-                onPress={this.contentAdd}
-                title=" Gatasdsadse"
-              />
-               <Button 
-                onPress={this.contentAdd}
-                title="wqe"
-              />
-</View>
-
-
-
-        </ScrollView>
-      <Body>
-          </Body>
-          <Right>
-          
-          </Right>
-        </Header>
-      </Container>
-      <Animated.View>
-      </Animated.View>
       <Animated.View>
       <Svg width='100%' height='100%'>
-     {this.state.bodyContents}
-     {console.log(this.state.bodyContents)}
-         </Svg></Animated.View>
+          <G {...this.gestureResponder}> 
+
+          <Rect
+            x={60}
+            y={30}
+            width="200"
+            height="30"
+            stroke="grey"
+            strokeWidth="3"
+            fill="#DEDEDE"
+          />
+<Text x={145} y={30+24} stroke="black" fontSize="25"
+    fontWeight="bold" fill="black" textAnchor="middle">
+     TOOLS
+    </Text>
+    
+    <Line  x1={200} y1={40} x2={220} y2={50} stroke="black" strokeWidth="2"/>
+               <Line  x1={220} y1={50} x2={240} y2={40} stroke="black" strokeWidth="2"/>
+          </G>
+          <G>
+            {this.showDropDownMenu()}
+            {this.state.bodyContents.map((userData) => {
+    return(
+      <G>
+        {userData}
+      </G>
+)})}
+          </G>
+        </Svg></Animated.View>
     </View>
     );
   }

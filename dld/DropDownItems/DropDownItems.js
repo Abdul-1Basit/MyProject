@@ -30,11 +30,10 @@ import {createResponder} from 'react-native-gesture-responder';
   */
   
   import React from 'react';
-  import { View, StyleSheet,Animated } from 'react-native';
+  import { View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import DropDownItems from '../DropDownItems/DropDownItems';
   
- class Practice extends React.Component {
+ class DropDownItems extends React.Component {
   constructor(props) {
     super(props);
     this.state={
@@ -67,20 +66,10 @@ import DropDownItems from '../DropDownItems/DropDownItems';
       debug: false
     });
   }
-  showArrow=()=>{
-    if(this.props.tra){
-      return(
-        <G> 
-               <Line  x1={200} y1={40} x2={220} y2={50} stroke="black" strokeWidth="2"/>
-               <Line  x1={220} y1={50} x2={240} y2={40} stroke="black" strokeWidth="2"/>
-   
-               
-        </G>
-      )
-    }
-  }
     render() {
-      return (<G>
+      return (
+    <G >
+      <G>
           <Rect
             x={60}
             y={this.props.yVal}
@@ -90,16 +79,16 @@ import DropDownItems from '../DropDownItems/DropDownItems';
             strokeWidth="3"
             fill="#DEDEDE"
           />
-<Text x={145} y={this.props.yVal+24} stroke="black" fontSize="25"
+<Text x={160} y={this.props.yVal+24} stroke="black" fontSize="25"
     fontWeight="bold" fill="black" textAnchor="middle">
       {this.props.gateName}
     </Text>
      
-  
    
     </G> 
-        
+    
+        </G>
       );
     }
   }
-  export default  Practice;
+  export default  DropDownItems;

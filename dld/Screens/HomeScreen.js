@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, Text,Image, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, TouchableWithoutFeedback, View } from 'react-native';
  
 class HomeScreen extends Component {
- 
+  static navigationOptions = {
+    header: null,
+  };
 
     render() {
       return (
