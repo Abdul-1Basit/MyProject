@@ -6,6 +6,7 @@ class NandGate extends Component {
   constructor(props) {
     super(props);
     this.state={
+      i:0,
             StartX:50,
             StartY:250,
             pathData:["M",50,250,
@@ -61,7 +62,7 @@ this.previousXVal=50+80;
 this.previousYVal=250+30;
 }
 componentWillMount() {
-  
+  //this.cc()
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
     this.gestureResponder = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
@@ -374,7 +375,18 @@ componentWillMount() {
       )
     }
   }
-
+  cc=()=>{setInterval(() => {
+    console.log(this.state.i)
+    this.func();
+    this.func2();
+  
+  this.o=this.state.i+5;
+  this.setState({
+     i:this.o
+  })
+  //
+  }, 3000*this.state.i);
+  }
   render() {
     return (
     <G>

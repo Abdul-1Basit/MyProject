@@ -1,119 +1,364 @@
-
 import React, { Component } from 'react';
-import { View } from 'react-native';
-import {Svg,G,Line,Circle,TSpan,Path,Image,Text} from 'react-native-svg';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Path,G,Svg,Line,Circle } from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
-import NotGate from '../Screens/NotGate'
-
-
-const dropDownUnClicked=<G > 
-<Image
-x="222"
-y="-45"
-width="100"
-height="110"
-opacity="0.5"
-href={require('../assets/images/Tools.png')}
-
-/>
-</G>
+import Practice from '../Screens/Practice'
+import SmallDropDown from '../DropDownItems/SmallDropDown'
 
 class PracticeScreen extends Component {
+
   constructor(props) {
     super(props);
-    this.state = {
-        pathData:dropDownUnClicked,
-        tap:false,
-        arrayofObjects:[],
-
-    };
-  //  this.st=false;
-  }
-  componentWillMount() {
-    this.gestureResponder = createResponder({
+    this.state={
+        doubleTap:false,
+        menuYval:250,
+        menuPosition:150,
+            StartX:190,
+            StartY:300,
+            V:true,
+                  }
+}
+componentWillMount() {
+  
+    this.gestureResponder1 = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
       onStartShouldSetResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetResponder: (evt, gestureState) => true,
       onMoveShouldSetResponderCapture: (evt, gestureState) => true,
-      onResponderGrant: (evt, gestureState) => {},
-      onResponderMove: (evt, gestureState) => {},
+      onResponderGrant: (evt, gestureState) => {
+     },
+      onResponderMove: (evt, gestureState) => {
+      },
       onResponderTerminationRequest: (evt, gestureState) => true,
-      onResponderRelease: (evt, gestureState) => {},
+      onResponderRelease: (evt, gestureState) => {
+           /*   if(gestureState.doubleTapUp){
+                      console.log('DOUBLE TAPP')
+                this.tempMenuVal=this.state.StartX;
+                this.temt=this.state.StartY;
+                this.t=this.state.doubleTap
+               
+                this.setState({
+                        doubleTap:(this.t)?false:true,
+                      menuPosition:(this.tempMenuVal<160)?10:170,
+                      menuYval:(this.temt<280)?80:350,
+                        
+                })
+               
+              }
+    */
+      },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
-         this.st=this.state.tap;
-         console.log("old state",this.state.tap)
-         this.setState({
-             tap:(this.st)?false:true
-         })
-         console.log("new state",this.state.tap)
-         this.state.arrayofObjects.push(<NotGate/>)
-
+console.log('PRESSED AND GATE')
+       
+this.setState({V:false,})
+      //  this.props.dltGate('And');
+       //   console.log(gestureState.doubleTapUp,"double tap")
       },
       
       moveThreshold: 2,
       debug: false
+      
     });
+     
+    this.gestureResponder2= createResponder({
+
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+  
+                this.setState({V:false,})
+            //    this.props.dltGate();
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+
+});
+       
+    this.gestureResponder3 = createResponder({
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+  
+         
+                this.props.dltGate();
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+      });
+       
+    this.gestureResponder4= createResponder({
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+                this.props.dltGate();
+         
+          
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+      });
+      
+       
+    this.gestureResponder5 = createResponder({
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+                this.props.dltGate();  this.props.dltGate();
+         
+          
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+      });
+       
+    this.gestureResponder6 = createResponder({
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+  
+                this.props.dltGate();
+          
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+      });
+       
+    this.gestureResponder7 = createResponder({
+        onStartShouldSetResponder: (evt, gestureState) => true,
+        onStartShouldSetResponderCapture: (evt, gestureState) => true,
+        onMoveShouldSetResponder: (evt, gestureState) => true,
+        onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+        onResponderGrant: (evt, gestureState) => {
+       },
+        onResponderMove: (evt, gestureState) => {
+        },
+        onResponderTerminationRequest: (evt, gestureState) => true,
+        onResponderRelease: (evt, gestureState) => {
+             /*   if(gestureState.doubleTapUp){
+                        console.log('DOUBLE TAPP')
+                  this.tempMenuVal=this.state.StartX;
+                  this.temt=this.state.StartY;
+                  this.t=this.state.doubleTap
+                 
+                  this.setState({
+                          doubleTap:(this.t)?false:true,
+                        menuPosition:(this.tempMenuVal<160)?10:170,
+                        menuYval:(this.temt<280)?80:350,
+                          
+                  })
+                 
+                }
+      */
+        },
+        onResponderTerminate: (evt, gestureState) => {},
+        
+        onResponderSingleTapConfirmed: (evt, gestureState) => {
+  console.log('PRESSSEND xNORR')
+        // this.props.dltGate('And');
+        this.setState({V:false,})
+         //   console.log(gestureState.doubleTapUp,"double tap")
+        },
+        
+        moveThreshold: 2,
+        debug: false
+        
+      });
+      
+      
+      
+      
   }
+  tem=()=>{
+          if(this.state.V)
+
+{
+        return(   <G>
+                  
+             
+              
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+40} xVal={this.state.menuPosition} gateName={'And Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+60} xVal={this.state.menuPosition} gateName={'Or Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+80} xVal={this.state.menuPosition} gateName={'Not Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+100} xVal={this.state.menuPosition} gateName={'Nand Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+120} xVal={this.state.menuPosition} gateName={'Nor Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+140} xVal={this.state.menuPosition} gateName={'Xor Gate'}/>
+                </G>
+                <G >
+                <SmallDropDown yVal={this.state.menuYval+160} xVal={this.state.menuPosition} gateName={'Xnor Gate'}/>
+                </G>
+               
+            
+                </G>
+          
+
+        )
+}        }
 
   render() {
     return (
-      <G>
-          <G>
-              {this.state.arrayofObjects}
-          </G>
-         <G  {...this.gestureResponder}> 
-  
-         <Image
-                x="222"
-                y="-45"
-                width="100"
-                height="100"
-                opacity="0.5"
-                href={require('../assets/images/toolsUp.png')}
-
-                />
-  
-  </G>
-  <G>
-                    <G >
-                    <Text x="235" y="48" fill="red" fontSize="25">
-                            Or 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="71" fill="red" fontSize="25">
-                            Not 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="94" fill="red" fontSize="25">
-                            Xor 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="117" fill="red" fontSize="25">
-                            Xnor 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="140" fill="red" fontSize="25">
-                            Nand 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="163" fill="red" fontSize="25">
-                            Nor 
-                    </Text>
-                    </G>
-                    <G>
-                    <Text x="235" y="186" fill="red" fontSize="25">
-                            And 
-                    </Text>
-                    </G>
-  </G>
-      </G>
+    <G >
+        
+     {this.tem()}  
+        
+         </G>
     );
   }
 }

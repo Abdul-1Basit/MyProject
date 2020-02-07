@@ -73,14 +73,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
           <Rect
             x={60}
             y={this.props.yVal}
-            width="200"
-            height="30"
+            width="100"
+            height="10"
             stroke="grey"
             strokeWidth="3"
-            fill="#DEDEDE"
+            fill="#FFFCFC"
           />
-<Text x={160} y={this.props.yVal+24} stroke="black" fontSize="25"
-    fontWeight="bold" fill="black" textAnchor="middle">
+<Text x={160} y={this.props.yVal+24} stroke="black" fontSize="10"
+    fontWeight="bold" fill="#33FFF7" textAnchor="middle">
       {this.props.gateName}
     </Text>
      

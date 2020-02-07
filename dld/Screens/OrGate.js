@@ -6,6 +6,7 @@ class OrGate extends Component {
   constructor(props) {
     super(props);
     this.state={
+      i:0,
         StartX:50,
         StartY:350,
         pathData:["M",50,350,
@@ -58,6 +59,7 @@ this.previousYVal=350+30;
 
 }
 componentWillMount() {
+ // this.cc()
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
  //this.changeColor();
     this.gestureResponder = createResponder({
@@ -222,6 +224,20 @@ componentWillMount() {
       moveThreshold: 2,
       debug: false
     });
+  }
+
+
+  cc=()=>{setInterval(() => {
+    console.log(this.state.i)
+    this.func();
+    this.func2();
+  
+  this.o=this.state.i+5;
+  this.setState({
+     i:this.o
+  })
+  //
+  }, 3000*this.state.i);
   }
   func=()=>{
     if(this.state.inputtap)

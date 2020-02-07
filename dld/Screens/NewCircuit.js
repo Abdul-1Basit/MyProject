@@ -21,6 +21,9 @@ import Offtput from './OffInput'
 import PracticeScreen from '../Folder/PracticeScreen'
 import Output from './Output'
 import ModalWork from './ModalWork'
+import DFlipFlop from '../FlipFlops/DFlipFlop'
+import TFlipFlop from '../FlipFlops/TFlipFlop'
+import Clock from '../FlipFlops/Clock'
 
 const component1 = () => <G> <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
 </G>
@@ -120,7 +123,7 @@ class NewCircuit extends Component {
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
         this.eu=this.state.bodyContents;
-        this.eu.push(   <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
+        this.eu.push(   <Output setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
       
         )
         this.setState({
@@ -328,6 +331,96 @@ class NewCircuit extends Component {
       moveThreshold: 2,
       debug: false
     });
+    this.gestureResponder10 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        console.log("gasda")
+       this.eu=this.state.bodyContents;
+       this.eu.push(   <Clock setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
+       )
+       this.setState({
+         bodyContents:this.eu
+       })
+       
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder11 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        console.log("gasda")
+       this.eu=this.state.bodyContents;
+       this.eu.push(  <DFlipFlop  Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+       )
+       this.setState({
+         bodyContents:this.eu
+       })
+       
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
+    this.gestureResponder12 = createResponder({
+      onStartShouldSetResponder: (evt, gestureState) => true,
+      onStartShouldSetResponderCapture: (evt, gestureState) => true,
+      onMoveShouldSetResponder: (evt, gestureState) => true,
+      onMoveShouldSetResponderCapture: (evt, gestureState) => true,
+      onResponderGrant: (evt, gestureState) => {
+      },
+      onResponderMove: (evt, gestureState) => {
+    
+      },
+      onResponderTerminationRequest: (evt, gestureState) => true,
+      onResponderRelease: (evt, gestureState) => {
+      
+      },
+      onResponderTerminate: (evt, gestureState) => {},
+      
+      onResponderSingleTapConfirmed: (evt, gestureState) => {
+        console.log("gasda")
+       this.eu=this.state.bodyContents;
+       this.eu.push(  <TFlipFlop  Inputs={this.state.Inputs} Outputs={this.state.Outputs} GateInputs={this.state.GateInputs} GateOutputs={this.state.GateOutputs} deleteOutput={this.deletepreviousOutput.bind(this)} firstlyAssign={this.firstAssignmentOfOutput.bind(this)}/>
+       )
+       this.setState({
+         bodyContents:this.eu
+       })
+       
+      },
+      
+      moveThreshold: 2,
+      debug: false
+    });
     
   }
   setGateInputs=(a,b,c)=>{
@@ -372,9 +465,10 @@ setfalse=()=>{
 deletepreviousAddNew=(a,b,c,d,e)=>{
   for (let i = 0; i <this.state.Inputs.length; i+=3) {
     console.log(this.state.Inputs[i],this.state.Inputs[i+1],'in delete function of OnInput')
-    console.log(a,b,c,d,e)
+   // console.log(a,b,c,d,e)
     if(this.state.Inputs[i]==a&&this.state.Inputs[i+1]==b){
-  console.log(a,b,c,d,e)
+ // console.log(a,b,c,d,e)
+ console.log('deleteinggg pevoirrruss')
       this.t=this.state.Inputs;
   this.t.splice(i,3,d,e,c)
   this.setState({Inputs:this.t})
@@ -416,32 +510,41 @@ showDropDownMenu=()=>{
   if(this.state.isVisibile){
   return(<G>
 <G {...this.gestureResponder1}>
-<Practice yVal={60} gateName={'ON Input'}/>
+<Practice yVal={60} xVal={60} gateName={'ON Input'}/>
 </G>
 
 <G {...this.gestureResponder2}>
-<Practice yVal={90} gateName={'OFF Input'}/>
+<Practice yVal={90} xVal={60} gateName={'Output'}/>
 </G>
 <G {...this.gestureResponder3}>
-<Practice yVal={120} gateName={'And Gate'}/>
+<Practice yVal={120} xVal={60} gateName={'And Gate'}/>
 </G>
 <G {...this.gestureResponder4}>
-<Practice yVal={150} gateName={'Or Gate'}/>
+<Practice yVal={150} xVal={60} gateName={'Or Gate'}/>
 </G>
 <G {...this.gestureResponder5}>
-<Practice yVal={180} gateName={'Not Gate'}/>
+<Practice yVal={180} xVal={60} gateName={'Not Gate'}/>
 </G>
 <G {...this.gestureResponder6}>
-<Practice yVal={210} gateName={'Nand Gate'}/>
+<Practice yVal={210} xVal={60} gateName={'Nand Gate'}/>
 </G>
 <G {...this.gestureResponder7}>
-<Practice yVal={240} gateName={'Nor Gate'}/>
+<Practice yVal={240} xVal={60} gateName={'Nor Gate'}/>
 </G>
 <G {...this.gestureResponder8}>
-<Practice yVal={270} gateName={'Xor Gate'}/>
+<Practice yVal={270} xVal={60} gateName={'Xor Gate'}/>
 </G>
 <G {...this.gestureResponder9}>
-<Practice yVal={300} gateName={'Xnor Gate'}/>
+<Practice yVal={300} xVal={60} gateName={'Xnor Gate'}/>
+</G>
+<G {...this.gestureResponder10}>
+<Practice yVal={330} xVal={60} gateName={'Clock'}/>
+</G>
+<G {...this.gestureResponder11}>
+<Practice yVal={360} xVal={60} gateName={'D Flipflop'}/>
+</G>
+<G {...this.gestureResponder12}>
+<Practice yVal={390} xVal={60}gateName={'T Flipflop'}/>
 </G>
 </G>
   )
@@ -469,27 +572,35 @@ return(
             y={30}
             width="200"
             height="30"
-            stroke="grey"
+            stroke="black"
             strokeWidth="3"
-            fill="#DEDEDE"
+            fill="#D9F4F9"
           />
 <Text x={145} y={30+24} stroke="black" fontSize="25"
-    fontWeight="bold" fill="black" textAnchor="middle">
+    fontWeight="bold" fill="#0792A7" textAnchor="middle">
      TOOLS
     </Text>
     
     <Line  x1={200} y1={40} x2={220} y2={50} stroke="black" strokeWidth="2"/>
                <Line  x1={220} y1={50} x2={240} y2={40} stroke="black" strokeWidth="2"/>
           </G>
+      
+      <G>
+      <OnInput setIn={this.setInputs.bind(this)} del={this.deletepreviousAddNew.bind(this)}  />
+      
+      </G>
           <G>
-            {this.showDropDownMenu()}
-            {this.state.bodyContents.map((userData) => {
+        
+        {this.state.bodyContents.map((userData) => {
     return(
       <G>
         {userData}
       </G>
 )})}
+      {this.showDropDownMenu()}
+           
           </G>
+      
         </Svg></Animated.View>
     </View>
     );

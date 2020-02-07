@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Path,G,Svg,Line,Circle } from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
-class AndGate extends Component {
+class MAndGate extends Component {
   constructor(props) {
     super(props);
     this.state={
-      i:0,
             StartX:185,
             StartY:250,
             pathData:["M",185,250,
@@ -65,7 +64,17 @@ this.previousXVal=185+80;
 this.previousYVal=250+30;
 }
 componentWillMount() {
-  //this.cc();
+    this.setState(
+        {
+            inputendPointX:this.props.InputOneX,
+            inputendPointY:this.props.InputOneY,
+            input2endPointX:this.props.InputTwoX,
+            input2endPointY:this.props.InputTwoY,
+            StartX:this.props.X,
+            StartY:this.props.Y,
+        }
+    )
+  
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
     this.gestureResponder = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
@@ -254,18 +263,6 @@ changeOutput=()=>{
   }
 }
 
-cc=()=>{setInterval(() => {
-  console.log(this.state.i)
-  this.func();
-  this.func2();
-
-this.o=this.state.i+5;
-this.setState({
-   i:this.o
-})
-//
-}, 3000*this.state.i);
-}
 func=()=>{
   if(this.state.inputtap)
   {
@@ -450,4 +447,4 @@ func2=()=>{
   }
 }
 
-export default AndGate;
+export default MAndGate;

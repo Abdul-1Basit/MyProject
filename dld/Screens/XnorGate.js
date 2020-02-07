@@ -6,6 +6,7 @@ class XnorGate extends Component {
   constructor(props) {
     super(props);
     this.state={
+      i:0,
         StartX:150,
         StartY:150,
       pathData:["M",150,150,
@@ -66,6 +67,7 @@ this.previousYVal=150+30
 }
 componentWillMount() {
   
+ // this.cc()
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
   
   this.gestureResponder = createResponder({
@@ -238,7 +240,18 @@ componentWillMount() {
  // this.output.color=(this.input.color=='black')?'red':'black';
 }
 
+cc=()=>{setInterval(() => {
+  console.log(this.state.i)
+  this.func();
+  this.func2();
 
+this.o=this.state.i+5;
+this.setState({
+   i:this.o
+})
+//
+}, 3000*this.state.i);
+}
 func=()=>{
   if(this.state.inputtap)
   {

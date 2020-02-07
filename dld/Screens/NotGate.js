@@ -3,7 +3,8 @@ import { View, Text,Animated } from 'react-native';
 import {Svg,Path,Circle,G,Line,Defs} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
 import { InputGroup, Thumbnail } from 'native-base';
-
+import PracticeScreen from '../Folder/PracticeScreen'
+import MAndGate from './MAndGate'
 class NotGate extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +17,7 @@ class NotGate extends Component {
           }
     
     this.state={
+            i:1,
             startX:170,
             startY:70,
             pathData:["M",170,70,
@@ -36,7 +38,9 @@ class NotGate extends Component {
             outputEndPointX:170+13*4,
             outputEndPointY:70+30,
             outputcolor:'red' ,
-            outputtap:false
+            outputtap:false,
+            showSmallMenu:false,
+            showData:true,
 
       }
       this.previousXVal=170+13*4;
@@ -46,6 +50,7 @@ this.tap=false;
      // this.logiColor='black';
 }
 componentWillMount() {
+ // this.cc();
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputcolor);
   //this.changeGateOutput();
   this.gestureResponder = createResponder({
@@ -83,6 +88,12 @@ componentWillMount() {
       this.previousXVal=this.state.startX+13*4;
       this.previousYVal=this.state.startY+30;
       console.log('gesture release output is ',this.state.outputcolor)
+      if(gestureState.doubleTapUp){
+        console.log('double tapp of not gate')
+          this.setState({
+            showSmallMenu:true
+          })
+      }
      }
         /*
         //gate output maping
@@ -273,7 +284,30 @@ console.log('OUTPUTCOLOR',this.output.color)
   
   //this.output.color=(this.input.color=='black')?'red':'black';
 }
+cc=()=>{setInterval(() => {
+  console.log(this.state.i)
+  this.checkInput();
 
+this.o=this.state.i+5;
+this.setState({
+   i:this.o
+})
+//
+}, 3000*this.state.i);
+}
+dlt=()=>{}
+drawMenu=()=>{
+  if(this.state.showSmallMenu){
+   
+   console.log('TRUEEEEEE')
+    return(
+      <G>
+        <PracticeScreen X={this.state.startX} Y={this.state.startY} dltGate={this.dlt.bind(this)}/>
+
+      </G>
+    )
+  }
+}
 checkInput=()=>{
   console.log('checking input connection')
   if(this.state.inputtap)
@@ -375,21 +409,7 @@ drawOutputLine=()=>{
   )
 }
 }
-/*checkOnInputValue=(a,b)=>{
-  console.log(a,b,this.state.inputEndPointX,this.state.inputEndPointY)
-  if(((((a-this.state.inputEndPointX.toFixed(2))<7) &&((a-this.state.inputEndPointX.toFixed(2))>-7))||(((this.state.inputEndPointX.toFixed(2)-a)<7)&&((this.state.inputEndPointX.toFixed(2)-a)>-7)))||((((b-this.state.inputEndPointY.toFixed(2))<7) &&((b-this.state.inputEndPointY.toFixed(2))>-7))||((( this.state.inputEndPointY.toFixed(2)-b)>-7)&& ((this.state.inputEndPointY.toFixed(2)-b)<7))))
-  {
-    console.log((a-this.state.inputEndPointX.toFixed(2)))
-    console.log((this.state.inputEndPointX.toFixed(2)-a))
-    console.log((b-this.state.inputEndPointY.toFixed(2)))
-    console.log((this.state.inputEndPointY.toFixed(2)-b))
-    
-   return true;
-  
-  
-}
-  return false;
-}*/
+
 
   render() {
     return (
@@ -399,7 +419,8 @@ drawOutputLine=()=>{
        <Path d={this.state.pathData}
                 strokeWidth="3"/> 
                 </G>
-                <Line  x1={this.state.startX-10*2} y1={this.state.startY+15*2} x2={this.state.startX} y2={this.state.startY+15*2} stroke="black" strokeWidth="2"/>
+                <G>  
+       <Line  x1={this.state.startX-10*2} y1={this.state.startY+15*2} x2={this.state.startX} y2={this.state.startY+15*2} stroke="black" strokeWidth="2"/>
                 <Line  x1={this.state.startX+15*2} y1={this.state.startY+15*2} x2={this.state.startX+12*4} y2={this.state.startY+15*2} stroke="black" strokeWidth="2"/>
                
                <G  {...this.gestureResponder1}> 
@@ -410,9 +431,12 @@ drawOutputLine=()=>{
          
           <Circle cx={this.state.startX+13*4} cy={this.state.startY+15*2} r="12" fill={this.state.outputcolor} />
           </G>
-          
+          </G>
+  
         {this.drawInputLine()}
         {this.drawOutputLine()}
+        {this.drawMenu()}
+      
     </G>
       );
   }

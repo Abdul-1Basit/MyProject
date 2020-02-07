@@ -6,6 +6,7 @@ class XorGate extends Component {
   constructor(props) {
     super(props);
     this.state={
+      i:0,
         StartX:50,
         StartY:50,
         pathData:['M',50,50,
@@ -64,6 +65,7 @@ this.previousYVal=50+30;
 }
 
 componentWillMount() {
+ // this.cc()
   
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
   this.gestureResponder = createResponder({
@@ -275,7 +277,18 @@ outputConnection=()=>{
     )
   }
 }
+cc=()=>{setInterval(() => {
+  console.log(this.state.i)
+  this.func();
+  this.func2();
 
+this.o=this.state.i+5;
+this.setState({
+   i:this.o
+})
+//
+}, 3000*this.state.i);
+}
 func=()=>{
   if(this.state.inputtap)
   {

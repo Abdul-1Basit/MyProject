@@ -1,42 +1,38 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Path,G,Svg,Line,Circle } from 'react-native-svg';
+import { View,  TouchableOpacity } from 'react-native';
+import { Path,G,Text,Svg,Line,Circle } from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
-class AndGate extends Component {
+class DFlipFlop extends Component {
   constructor(props) {
     super(props);
     this.state={
-      i:0,
+             i:0,
             StartX:185,
             StartY:250,
             pathData:["M",185,250,
-                      "L",185,250+60,
-                      "M",185,250+60,
-                      "L",185+30,250+60,
-                      "M",185,250,
-                      "L",185+30,250,
+                      "L",185+50,250,
+                      "L",185+50,250+50,
+                      "L",185,250+50,
+                      "L",185,250,
                       ].join(' '),
-                      pathData2:
-                      ["M",185+30,250, "Q",185+60,250+30,
-                          185+30,250+60].join(' '),
-            
-                        inputpointX:185-30,
+    
+                        inputpointX:185-15,
                         inputpointY:250+15,
-                        inputendPointX:185-30,
+                        inputendPointX:185-15,
                         inputendPointY:250+15,
                         inputtap:false,
                         inputColor:'black',
-                        input2pointX:185-30,
+                        input2pointX:185-15,
                         input2pointY:250+45,
-                        input2endPointX:185-30,
+                        input2endPointX:185-15,
                         input2endPointY:250+45,
                         input2tap:false,
                         input2Color:'black',
                         
-                      outputpointX:185+80,
-                      outputpointY:250+30,
-                      outputendPointX:185+80,
-                      outputendPointY:250+3,
+                      outputpointX:185+67,
+                      outputpointY:250+15,
+                      outputendPointX:185+67,
+                      outputendPointY:250+15,
                       outputtap:false,
                       outputColor:'black'
                 }
@@ -61,11 +57,13 @@ this.output={
     tap:false
 }
 
-this.previousXVal=185+80;
-this.previousYVal=250+30;
+this.previousXVal=185+67;
+this.previousYVal=250+15;
 }
 componentWillMount() {
-  //this.cc();
+    this.clockCycle();
+    
+  
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
     this.gestureResponder = createResponder({
       onStartShouldSetResponder: (evt, gestureState) => true,
@@ -82,21 +80,18 @@ componentWillMount() {
                 StartX:gestureState.moveX,
                 StartY:gestureState.moveY,
                 pathData:["M",gestureState.moveX,gestureState.moveY,
-                "L",gestureState.moveX,gestureState.moveY+60,
-                "M",gestureState.moveX,gestureState.moveY+60,
-                "L",gestureState.moveX+30,gestureState.moveY+60,
-                "M",gestureState.moveX,gestureState.moveY,
-                "L",gestureState.moveX+30,gestureState.moveY,
+                "L",gestureState.moveX+50,gestureState.moveY,
+                "L",gestureState.moveX+50,gestureState.moveY+50,
+                "L",gestureState.moveX,gestureState.moveY+50,
+                "L",gestureState.moveX,gestureState.moveY,
             ].join(' '),
-            pathData2:
-            ["M",gestureState.moveX+30,gestureState.moveY, "Q",gestureState.moveX+60,gestureState.moveY+30,
-            gestureState.moveX+30,gestureState.moveY+60].join(' '),
-            inputpointX:gestureState.moveX-30,
+         
+            inputpointX:gestureState.moveX-15,
             inputpointY:gestureState.moveY+15,
-            input2pointX:gestureState.moveX-30,
+            input2pointX:gestureState.moveX-15,
             input2pointY:gestureState.moveY+45,
-            outputpointX:gestureState.moveX+80,
-            outputpointY:gestureState.moveY+30,
+            outputpointX:gestureState.moveX+67,
+            outputpointY:gestureState.moveY+15,
           
               })
           }
@@ -105,16 +100,15 @@ componentWillMount() {
       onResponderRelease: (evt, gestureState) => {
       //  this.changeOutput()
       if(this.tap){
-        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+80,this.state.StartY+30);
-        this.previousXVal=this.state.StartX+80;
-        this.previousYVal=this.state.StartY+30;
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+67,this.state.StartY+15);
+        this.previousXVal=this.state.StartX+67;
+        this.previousYVal=this.state.StartY+15;
      
       }
       },
       onResponderTerminate: (evt, gestureState) => {},
       
       onResponderSingleTapConfirmed: (evt, gestureState) => {
-
         this.tap=(this.tap)?false:true;
         console.log("value of this.tap ",this.tap);
         console.log("singletapupconfirmed",gestureState.singleTapUp);
@@ -254,18 +248,6 @@ changeOutput=()=>{
   }
 }
 
-cc=()=>{setInterval(() => {
-  console.log(this.state.i)
-  this.func();
-  this.func2();
-
-this.o=this.state.i+5;
-this.setState({
-   i:this.o
-})
-//
-}, 3000*this.state.i);
-}
 func=()=>{
   if(this.state.inputtap)
   {
@@ -285,9 +267,9 @@ func=()=>{
       this.setState({inputColor:this.props.Inputs[i+2],
                     outputColor:this.OCColor})
       
-      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
-      this.previousXVal=this.state.StartX+80;
-      this.previousYVal=this.state.StartY+30;
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+67,this.state.StartY+15);
+      this.previousXVal=this.state.StartX+67;
+      this.previousYVal=this.state.StartY+15;
       console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
       
       console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
@@ -308,9 +290,9 @@ func=()=>{
         this.setState({inputColor:this.inputByGates[i+2],
                       outputColor:this.OCColor})
         
-        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
-        this.previousXVal=this.state.StartX+80;
-        this.previousYVal=this.state.StartY+30;
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+67,this.state.StartY+15);
+        this.previousXVal=this.state.StartX+67;
+        this.previousYVal=this.state.StartY+15;
         
         console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
         console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
@@ -341,9 +323,9 @@ func2=()=>{
       this.setState({input2Color:this.props.Inputs[i+2],
                     outputColor:this.OCColor})
       
-      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
-      this.previousXVal=this.state.StartX+80;
-      this.previousYVal=this.state.StartY+30;
+      this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+67,this.state.StartY+15);
+      this.previousXVal=this.state.StartX+67;
+      this.previousYVal=this.state.StartY+15;
       
       console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
       console.log('recieved vale ',this.props.Inputs[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
@@ -365,9 +347,9 @@ func2=()=>{
         this.setState({input2Color:this.inputByGates[i+2],
                       outputColor:this.OCColor})
         
-        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+80,this.state.StartY+30);
-        this.previousXVal=this.state.StartX+80;
-        this.previousYVal=this.state.StartY+30;
+        this.props.deleteOutput(this.previousXVal,this.previousYVal,this.OCColor,this.state.StartX+67,this.state.StartY+15);
+        this.previousXVal=this.state.StartX+67;
+        this.previousYVal=this.state.StartY+15;
         
         console.log('OCCOlor',this.OCColor,'output',this.state.outputColor)
         console.log('recieved vale ',this.inputByGates[i+2],this.state.inputColor,this.state.input2Color,this.state.outputColor)
@@ -420,34 +402,61 @@ func2=()=>{
       )
     }
   }
+  clockCycle=()=>{
+      
+    setInterval(() => {
+        console.log('calling a check func')
+        this.ue=this.state.i;
+        this.setState({
+            i:this.ue+5
+        })
+        this.func()
+        this.func2()
+     //
+      }, 3000*this.state.i);
+    }
+
+ 
   render() {
     return (
     <G >
         <G {...this.gestureResponder} >
           <Path d={this.state.pathData} stroke="black" strokeWidth="2"  fill='none'/>
-          <Path d={this.state.pathData2} stroke="black" strokeWidth="2"  fill='none'/>
-          
+          <Text x={this.state.StartX+10} y={this.state.StartY+15} stroke="black" fontSize="15"
+     fill="black" textAnchor="middle">
+      D
+    </Text>
+    <Text x={this.state.StartX+43} y={this.state.StartY+30} stroke="black" fontSize="15"
+     fill="black" textAnchor="middle">
+        q
+    </Text>
+    <Line x1={this.state.StartX} y1={this.state.StartY+35} x2={this.state.StartX+10} y2={this.state.StartY+42} stroke="red" strokeWidth="2" />
+          <Line x1={this.state.StartX+10} y1={this.state.StartY+42} x2={this.state.StartX} y2={this.state.StartY+49} stroke="red" strokeWidth="2" />
+         
+
           </G>
-          <Line x1={this.state.StartX-1} y1={this.state.StartY+15} x2={this.state.StartX-30} y2={this.state.StartY+15} stroke="red" strokeWidth="2" />
-          <Line x1={this.state.StartX-1} y1={this.state.StartY+45} x2={this.state.StartX-30} y2={this.state.StartY+45} stroke="red" strokeWidth="2" />
-          <Line x1={this.state.StartX+45} y1={this.state.StartY+30} x2={this.state.StartX+80} y2={this.state.StartY+30} stroke="red" strokeWidth="2" />
+          <Line x1={this.state.StartX-1} y1={this.state.StartY+15} x2={this.state.StartX-15} y2={this.state.StartY+15} stroke="red" strokeWidth="2" />
+          <Line x1={this.state.StartX-1} y1={this.state.StartY+45} x2={this.state.StartX-15} y2={this.state.StartY+45} stroke="red" strokeWidth="2" />
+          <Line x1={this.state.StartX+50} y1={this.state.StartY+15} x2={this.state.StartX+65} y2={this.state.StartY+15} stroke="red" strokeWidth="2" />
          
           <G {...this.gestureResponderInput1}>
-                      <Circle cx={this.state.StartX-30} cy={this.state.StartY+15} r="12" fill={this.state.inputColor} />
+                      <Circle cx={this.state.StartX-15} cy={this.state.StartY+15} r="11" fill={this.state.inputColor} />
     
                       </G>
                       <G {...this.gestureResponderInput2}>
-          <Circle cx={this.state.StartX-30} cy={this.state.StartY+45} r="12" fill={this.state.input2Color} />
+          <Circle cx={this.state.StartX-15} cy={this.state.StartY+45} r="11" fill={this.state.input2Color} />
           </G>
           <G {...this.gestureResponderOutput}>
-          <Circle cx={this.state.StartX+80} cy={this.state.StartY+30} r="12" fill={this.state.outputColor} />
+          <Circle cx={this.state.StartX+67} cy={this.state.StartY+15} r="11" fill={this.state.outputColor} />
           </G>
           {this.inputConnection()}
           {this.inputConnection2()}
           {this.outputConnection()}
+       
          </G>
+    
     );
   }
 }
 
-export default AndGate;
+export default DFlipFlop;

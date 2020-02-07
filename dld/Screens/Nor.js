@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import {Svg,G,Line,Circle,Path} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
+import PracticeScreen from '../Folder/PracticeScreen'
 class NorGate extends Component {
   constructor(props) {
     super(props);
     this.state={
+      i:0,
         StartX:200,
         StartY:350,
         pathData:["M",200,350,
@@ -36,6 +38,7 @@ class NorGate extends Component {
         OutputEndpointY:350+30,
         outputColor:'red',
                   outputtap:false,
+                  setVisiblee:false,
 
 }
 this.tap=false;
@@ -66,7 +69,7 @@ this.previousXVal=200+85;
 this.previousYVal=350+30;
 }
 componentWillMount() {
-  
+ // this.cc()
   this.props.firstlyAssign(this.previousXVal,this.previousYVal,this.state.outputColor);
  // this.changeColor();
   this.gestureResponder = createResponder({
@@ -112,6 +115,12 @@ componentWillMount() {
         this.props.deleteOutput(this.previousXVal,this.previousYVal,this.state.outputColor,this.state.StartX+80,this.state.StartY+30);
         this.previousXVal=this.state.StartX+80;
         this.previousYVal=this.state.StartY+30;
+      }
+      if(gestureState.doubleTapUp){
+        this.setState({
+          setVisiblee:true
+        }
+        )
       }
     },
     onResponderTerminate: (evt, gestureState) => {},
@@ -389,7 +398,33 @@ outputConnection(){
     )
   }
 }
+dlt=()=>{
+  
+}
+cc=()=>{setInterval(() => {
+  console.log(this.state.i)
+  this.func();
+  this.func2();
 
+this.o=this.state.i+5;
+this.setState({
+   i:this.o
+})
+//
+}, 3000*this.state.i);
+}
+showMenu=()=>{
+  if(this.state.setVisiblee){
+   
+    console.log('TRUEEEEEE')
+     return(
+       <G>
+         <PracticeScreen X={this.state.startX} Y={this.state.startY} dltGate={this.dlt.bind(this)}/>
+ 
+       </G>
+     )
+   }
+}
   render() {
     return (
         <G>
@@ -416,7 +451,7 @@ outputConnection(){
           <Circle cx={this.state.StartX+85} cy={this.state.StartY+30} r="12" fill={this.state.outputColor} />
         
           </G>
-
+      {this.showMenu()}
           {this.outputConnection()}
 
          </G>   );

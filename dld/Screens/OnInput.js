@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text,Animated } from 'react-native';
-import {Svg,Path,Circle,G,Line,Defs} from 'react-native-svg';
+import {Svg,Rect,Path,Circle,G,Line,Defs} from 'react-native-svg';
 import {createResponder} from 'react-native-gesture-responder';
 import { InputGroup, Thumbnail } from 'native-base';
 
@@ -11,7 +11,12 @@ class Input extends Component {
         startX:69,
         startY:80,
         inputcolor:'red',
-        tap:false
+        tap:false,
+        path:["M",69-30,80-10,
+        "L",69-30+20,80-10,
+        "L",69-30+20,80-10+10,
+        "L",69-30,80-10+10,
+        "L",69-30,80-10,].join(' '),
     };
     this.temp='red';
     this.tap=false;
@@ -49,8 +54,24 @@ class Input extends Component {
              inputcolor:this.temp
          })
         }*/
+        this.vs=this.state.inputcolor
+        if(gestureState.doubleTapUp){
+         this.vs= (this.state.inputcolor=='red')?'black':'red'
+          console.log('OFF')
+          this.setState(
+               { inputcolor:this.vs,
+                  
+                     } )
+                     console.log('vs',this.vs,this.state.inputcolor)
+                     this.props.del(this.sx,this.sy,this.vs,this.state.startX,this.state.startY)
+                     this.sx=this.state.startX;
+                     this.sy=this.state.startY;
+     
+                    }
         if(this.state.tap){
-          this.props.del(this.sx,this.sy,this.state.inputcolor,this.state.startX,this.state.startY)
+          this.props.del(this.sx,this.sy,this.vs,this.state.startX,this.state.startY)
+          this.sx=this.state.startX;
+          this.sy=this.state.startY;
         }
        
         //  this.props.setIn(this.state.startX,this.state.startY,this.state.inputcolor)
@@ -68,11 +89,7 @@ class Input extends Component {
           this.setState({
               tap:(this.tap)?false:true,  
           })
-          if(this.state.tap)
-          {
-            this.sx=this.state.startX;
-            this.sy=this.state.startY;
-          }
+       
           
           console.log('Oninput',this.state.tap)
           
@@ -85,9 +102,18 @@ class Input extends Component {
 
   render() {
     return (
+      <G>
+        <Rect    x={this.state.startX-37}
+    y={this.state.startY-10}
+    width="50"
+    height="20"
+    fill='grey'
+    strokeWidth="3"
+    stroke="rgb(0,0,0)"/>
      <G {...this.gestureResponder}>  
          <Circle cx={this.state.startX} cy={this.state.startY} r="12" strokeWidth="2" fill={this.state.inputcolor} />
       
+     </G>
      </G>
     );
   }

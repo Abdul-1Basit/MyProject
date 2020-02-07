@@ -32,9 +32,9 @@ import {createResponder} from 'react-native-gesture-responder';
   import React from 'react';
   import { View, StyleSheet,Animated } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import DropDownItems from '../DropDownItems/DropDownItems';
   
- class Practice extends React.Component {
+ class SmallDropDown extends React.Component {
   constructor(props) {
     super(props);
     this.state={
@@ -84,13 +84,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
           <Rect
             x={this.props.xVal}
             y={this.props.yVal}
-            width="200"
-            height="30"
+            width="100"
+            height="20"
             stroke="black"
             strokeWidth="3"
             fill="#D9F4F9"
           />
-<Text x={this.props.xVal*2+35} y={this.props.yVal+24} stroke="black" fontSize="25"
+<Text x={this.props.xVal+40} y={this.props.yVal+15} stroke="black" fontSize="15"
     fontWeight="bold" fill="#0792A7" textAnchor="middle">
       {this.props.gateName}
     </Text>
@@ -102,4 +102,4 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
       );
     }
   }
-  export default  Practice;
+  export default  SmallDropDown;
